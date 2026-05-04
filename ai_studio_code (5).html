@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Live UI - Secure Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        body {
+            background-color: #1a0f08;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* ঘূর্ণায়মান বর্ডার এনিমেশন */
+        .linear-glow-box {
+            position: relative;
+            padding: 2px;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .blue-glow::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 400%;
+            background: conic-gradient(transparent, #0066ff, #00ccff, transparent, #0066ff, transparent);
+            animation: rotateLight 3s linear infinite;
+        }
+
+        /* রেড গ্লো (হ্যাকড পেজের জন্য) */
+        .red-glow::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 400%;
+            background: conic-gradient(transparent, #ff0000, #ff4d4d, transparent, #ff0000, transparent);
+            animation: rotateLight 2s linear infinite;
+        }
+
+        .inner-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 14px;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes rotateLight {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .rainbow-text {
+            background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8b00ff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbow-move 3s linear infinite;
+        }
+
+        @keyframes rainbow-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hidden { display: none; }
+
+        .login-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 14px 20px;
+            color: white;
+            font-size: 16px;
+            display: block;
+        }
+
+        .danger-text {
+            color: #ff3333;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center min-h-screen">
+
+    <!-- পেজ ১: হোম স্ক্রিন -->
+    <div id="home-page" class="w-full max-w-md flex flex-col items-center justify-between min-h-screen py-10 px-4">
+        <div class="grid grid-cols-3 gap-3 w-full opacity-90">
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=200" class="w-full h-full object-cover"></div></div>
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=200" class="w-full h-full object-cover"></div></div>
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200" class="w-full h-full object-cover"></div></div>
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200" class="w-full h-full object-cover"></div></div>
+            
+            <div class="aspect-[3/4] linear-glow-box blue-glow">
+                <div class="inner-content bg-black">
+                    <span class="text-white font-black text-7xl italic leading-none">S</span>
+                    <span class="rainbow-text text-[10px] tracking-[4px] font-black">LIVE</span>
+                </div>
+            </div>
+
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200" class="w-full h-full object-cover"></div></div>
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?w=200" class="w-full h-full object-cover"></div></div>
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.pexels.com/photos/1130626/pexels-photo-1130626.jpeg?w=200" class="w-full h-full object-cover"></div></div>
+            <div class="aspect-[3/4] linear-glow-box blue-glow"><div class="inner-content"><img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?w=200" class="w-full h-full object-cover"></div></div>
+        </div>
+
+        <div class="w-full px-4 mb-4 mt-10">
+            <button onclick="showLoginPage()" class="w-full bg-blue-600 text-white font-black py-4 rounded-full flex items-center justify-center gap-3 text-xl active:scale-95 transition-all shadow-xl">
+                <span>⚡</span> Fast Login
+            </button>
+            <div class="mt-6 flex items-start gap-3 text-sm">
+                <input type="checkbox" id="terms" class="mt-1 w-5 h-5 accent-blue-500 cursor-pointer">
+                <label for="terms" class="opacity-80">By using our App you agree with our <span class="text-blue-400 font-bold underline">Terms & conditions</span></label>
+            </div>
+        </div>
+    </div>
+
+    <!-- পেজ ২: লগইন পেজ -->
+    <div id="login-page" class="hidden w-full max-w-md flex flex-col items-center justify-center min-h-screen px-8">
+        <div class="mb-8 flex flex-col items-center">
+            <span class="text-white font-black text-8xl italic leading-none">S</span>
+            <span class="rainbow-text text-[14px] tracking-[8px] font-black uppercase -mt-2">LIVE</span>
+        </div>
+
+        <h2 class="text-xl font-bold mb-8 text-blue-400 tracking-widest uppercase">Member Login</h2>
+
+        <div class="w-full space-y-5">
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-widest mb-2 opacity-50 ml-2">Email</label>
+                <div class="linear-glow-box blue-glow">
+                    <div class="inner-content">
+                        <input type="email" id="email" placeholder="Enter your email" class="login-input">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-widest mb-2 opacity-50 ml-2">Password</label>
+                <div class="linear-glow-box blue-glow">
+                    <div class="inner-content">
+                        <input type="password" id="password" placeholder="••••••••" class="login-input">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="handleLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-2xl mt-4 shadow-lg active:scale-95 transition-all tracking-widest">
+                LOGIN
+            </button>
+        </div>
+
+        <button onclick="showHomePage()" class="mt-10 text-gray-500 font-bold text-sm hover:text-blue-400 transition-all uppercase tracking-widest">
+            ← Back to Home
+        </button>
+    </div>
+
+    <!-- পেজ ৩: হ্যাকড মেসেজ পেজ -->
+    <div id="hacked-page" class="hidden w-full max-w-md flex flex-col items-center justify-center min-h-screen px-6 text-center">
+        <div class="mb-6 linear-glow-box red-glow w-32 h-32 rounded-full">
+            <div class="inner-content rounded-full">
+                <span class="text-5xl">⚠️</span>
+            </div>
+        </div>
+
+        <h1 class="text-3xl font-black danger-text mb-4">SYSTEM BREACHED!</h1>
+        
+        <div class="bg-black/50 border border-red-900/50 p-6 rounded-2xl backdrop-blur-md">
+            <p class="text-lg font-bold leading-relaxed">
+                আপনার মোবাইল ফোনটি হ্যাক করে নেওয়া হয়েছে। <br>
+                আপনার ব্যক্তিগত সকল তথ্য এখন আমাদের নিয়ন্ত্রণে।
+            </p>
+            <p class="mt-4 text-red-400 font-bold">
+                দ্রুত যোগাযোগ করুন নিচের নাম্বারে:
+            </p>
+            <h2 class="text-2xl font-black mt-2 text-white">01963314623</h2>
+        </div>
+
+        <a href="https://wa.me/8801963314623" class="mt-8 w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-full flex items-center justify-center gap-3 text-lg shadow-xl active:scale-95 transition-all">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="w-6 h-6" alt="WA">
+            Contact via WhatsApp
+        </a>
+
+        <p class="mt-6 text-xs text-gray-600 uppercase tracking-widest">Device ID: COMPROMISED-829X</p>
+    </div>
+
+    <script>
+        function showLoginPage() {
+            const isChecked = document.getElementById('terms').checked;
+            if (!isChecked) {
+                alert("Please agree to the Terms & conditions first!");
+                return;
+            }
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('hidden');
+        }
+
+        function showHomePage() {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('hacked-page').classList.add('hidden');
+            document.getElementById('home-page').classList.remove('hidden');
+        }
+
+        function handleLogin() {
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+
+            if (email === "" || pass === "") {
+                alert("Please enter both email and password!");
+                return;
+            }
+
+            // লগইন পেজ লুকিয়ে হ্যাকড পেজ দেখানো
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('hacked-page').classList.remove('hidden');
+            
+            // বডি ব্যাকগ্রাউন্ড একটু লালচে ভাব দেওয়া
+            document.body.style.backgroundColor = "#2a0505";
+        }
+    </script>
+
+</body>
+</html>
